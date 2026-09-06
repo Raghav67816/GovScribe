@@ -1,21 +1,28 @@
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import Home from "./views/Home";
+import Server from "./views/Server";
+import Services from "./views/Services";
+import Topbar from "./components/topbar";
+import Repositories from "./views/Repositories";
+import { AppSidebar } from "./components/app-sidebar";
+import { SidebarProvider } from "./components/ui/sidebar";
 
-export function App() {
+export default function App() {
+
+  const [activePage, setActivePage] = useState("Home");
+
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <SidebarProvider className="w-full h-screen flex">
+      <AppSidebar activePage={activePage} setActivePage={setActivePage} />
+      <div className="flex-1 flex flex-col min-w-0 h-full">
+        <Topbar activePage={activePage} />
+        <main className="flex-1 overflow-y-auto p-6 bg-background/50">
+            {activePage == "Home" && <Home></Home>}
+            {activePage == "Server" && <Server></Server>}
+            {activePage == "Repositories" && <Repositories></Repositories>}
+            {activePage == "Services" && <Services></Services>}
+        </main>
       </div>
-    </div>
-  )
+    </SidebarProvider>
+  );
 }
-
-export default App
